@@ -1,0 +1,4 @@
+# Api version: V1
+kind: Namespace
+Metadata:
+	Namespace: Dev2

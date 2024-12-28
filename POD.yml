@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-project
+  template:
+    metadata:
+      labels:
+        app: k8s-project
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: local-html
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+      volumes:
+        - name: local-html
+          hostPath:
+            path: /mnt/d/azk8s/index.html/
+            type: File
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-project
+spec:
+  selector:
+    app: k8s-project
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer
